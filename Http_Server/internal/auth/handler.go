@@ -5,16 +5,16 @@ import (
 	"net/http"
 )
 
-type AuthHandler struct {
+type Handler struct {
 	*configs.Config
 }
 
-type AuthHandlerDeps struct {
+type HandlerDeps struct {
 	*configs.Config
 }
 
-func NewAuthHandler(r *http.ServeMux, deps AuthHandlerDeps) {
-	handler := AuthHandler{deps.Config}
+func NewHandler(r *http.ServeMux, deps HandlerDeps) {
+	handler := Handler{deps.Config}
 	r.HandleFunc("POST /auth/login", handler.Login())
 	r.HandleFunc("POST /auth/register", handler.Register())
 }
