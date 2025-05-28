@@ -5,6 +5,7 @@ import (
 	"HttpServer/db"
 	"HttpServer/internal/auth"
 	"HttpServer/internal/link"
+	"HttpServer/pkg/middleware"
 	"fmt"
 	"net/http"
 )
@@ -24,9 +25,15 @@ func main() {
 		Repository: linkRepo,
 	})
 
+	// Middlewares
+	stack := middleware.Chain(
+		middleware.CORS,
+		middleware.Logging,
+	)
+
 	server := http.Server{
 		Addr:    ":8080",
-		Handler: router,
+		Handler: stack(router),
 	}
 	fmt.Println("Start listening...")
 	err := server.ListenAndServe()
